@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Item } from './criteria/criteria.component';
+import { CriteriaBuilder, Item } from './criteria/criteria.component';
 
 @Component({
   selector: 'app-root',
@@ -7,14 +7,10 @@ import { Item } from './criteria/criteria.component';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  builder = new CriteriaBuilder();
+
   criteria: Item[] = [
-    {
-      key: 'status',
-      label: 'Status',
-      type: 'text',
-      required: true,
-      defaultValue: 'Open',
-    },
+    this.builder.createTextField('status', 'Status'),
     {
       key: 'qty',
       label: 'Quantity',

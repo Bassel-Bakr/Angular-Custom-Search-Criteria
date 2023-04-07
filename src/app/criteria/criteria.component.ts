@@ -87,3 +87,44 @@ export type Item = {
 };
 
 type ItemType = 'text' | 'number' | 'date' | 'boolean';
+
+export class CriteriaBuilder {
+  static counter = 0;
+
+  createTextField(
+    key: string,
+    label?: string,
+    options?: Omit<RequireOnly<Item, 'key'>, 'type'>
+  ): Item {
+    return {
+      key: key,
+      label: label ?? key.toUpperCase(),
+      type: 'text',
+      required: options?.required ?? false,
+      defaultValue: options?.defaultValue ?? '',
+    };
+  }
+
+  createNumberField(options: Omit<RequireOnly<Item, 'key'>, 'type'>): Item {
+    return {
+      key: options.key,
+      label: options.label ?? options.key.toUpperCase(),
+      type: 'number',
+      required: options.required ?? false,
+      defaultValue: options.defaultValue ?? 0,
+    };
+  }
+
+  createDateField(options: Omit<RequireOnly<Item, 'key'>, 'type'>): Item {
+    return {
+      key: options.key,
+      label: options.label ?? options.key.toUpperCase(),
+      type: 'date',
+      required: options.required ?? false,
+      defaultValue: options.defaultValue ?? new Date(),
+    };
+  }
+}
+
+type RequireOnly<T extends object, K extends keyof T> = Pick<T, K> &
+  Partial<Pick<T, Exclude<keyof T, K>>>;
