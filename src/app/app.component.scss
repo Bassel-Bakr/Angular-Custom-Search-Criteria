@@ -1,0 +1,8 @@
+.app {
+  &__content {
+    box-sizing: border-box;
+    padding: 0.5%;
+
+    display: grid;
+  }
+}

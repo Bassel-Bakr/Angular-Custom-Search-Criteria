@@ -1,35 +1,57 @@
+import { AppService } from './app.service';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
-describe('AppComponent', () => {
+const fakeAppService = jasmine.createSpyObj<AppService>(['getText']);
+fakeAppService.getText.and.returnValue('Fake AppService');
+
+describe(`${AppComponent.name}`, () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
+      imports: [RouterTestingModule],
+      declarations: [AppComponent],
+      providers: [
+        {
+          provide: AppService,
+          useValue: fakeAppService,
+        },
       ],
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
+    })
+      // .overrideComponent(AppComponent, {
+      //   set: {
+      //     template: `
+      //       <div id="target">
+      //         {{ title }}
+      //       </div>
+      //     `,
+      //   },
+      // })
+      .compileComponents();
   });
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    const component = fixture.componentInstance;
+    expect(component).toBeTruthy();
   });
 
-  it(`should have as title 'ng5'`, () => {
+  it(`should have 'app' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('ng5');
+    const component = fixture.componentInstance;
+    expect(component.title).toEqual('app');
   });
 
-  it('should render title', () => {
+  it(`should have title in the html`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('ng5 app is running!');
+    const element: HTMLDivElement = fixture.nativeElement;
+    expect(element.textContent?.trim()).toEqual('app');
+  });
+
+  it(`should inject app service`, () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.f()).toEqual(`Fake ${AppService.name}`);
   });
 });

@@ -1,0 +1,14 @@
+<form [formGroup]="_form">
+
+  <ng-container *ngFor="let item of criteria">
+    <mat-form-field class="input-field" [subscriptSizing]="'dynamic'">
+      <mat-label>{{ item.label }}</mat-label>
+
+      <input matInput [readonly]="item.readonly" [type]="item.type" [formControlName]="item.key">
+    </mat-form-field>
+  </ng-container>
+
+  <button mat-flat-button color="primary" (click)="submit()">
+    Search
+  </button>
+</form>
